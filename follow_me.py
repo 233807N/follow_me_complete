@@ -62,7 +62,7 @@ class FollowMe(Node):
             ankle_x_px = int(ankle.x * self.image_width)
             ankle_y_px = int(ankle.y * cv_image.shape[0])
 
-            cv2.circle(cv_image, (ankle_x_px, ankle_y_px), 10, (255, 0, 0), 2)
+            cv2.circle(cv_image, (ankle_x_px, ankle_y_px), 7, (255, 0, 0), 2)
 
             debug_msg = self.bridge.cv2_to_imgmsg(cv_image, "bgr8")
             self.debug_pub.publish(debug_msg)
