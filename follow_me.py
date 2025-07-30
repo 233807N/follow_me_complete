@@ -50,19 +50,18 @@ class FollowMe(Node):
             ankle = landmarks[self.mp_pose.PoseLandmark.LEFT_ANKLE]
 
             ############################
-            # New
             # Print left ankle coordinates
             print(f"Normalized (X,Y,Z): ({ankle.x:.3f}, {ankle.y:.3f}, {ankle.z:.3f})")
             print(f"Pixel (X,Y): ({int(ankle.x * self.image_width)}, {int(ankle.y * cv_image.shape[0])})")
             ############################
 
             ############################
-            # New
-	    # Draw blue circle around ankle
-            ankle_x_px = int(ankle.x * self.image_width)
-            ankle_y_px = int(ankle.y * cv_image.shape[0])
+            # Get ankle x and y in pixels
+            ankle_x = int(ankle.x * self.image_width)
+            ankle_y = int(ankle.y * cv_image.shape[0])
 
-            cv2.circle(cv_image, (ankle_x_px, ankle_y_px), 7, (255, 0, 0), 2)
+	    # Draw blue circle around ankle
+            cv2.circle(cv_image, (ankle_x, ankle_y), 7, (255, 0, 0), 2)
 
             debug_msg = self.bridge.cv2_to_imgmsg(cv_image, "bgr8")
             self.debug_pub.publish(debug_msg)
@@ -75,8 +74,6 @@ class FollowMe(Node):
                 self.cmd_pub.publish(twist)  # stop
                 return
 
-            # Get ankle x in pixels
-            ankle_x = int(ankle.x * image_width)
             offset = ankle_x - self.center_x  # How far from center
 
             # Angular control: rotate to center the ankle
