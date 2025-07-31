@@ -68,19 +68,20 @@ class FollowMe(Node):
 	    ############################
 
 
+            offset = ankle_x - self.center_x  # How far from center
+
 
             if ankle.visibility < 0.5:
                 self.get_logger().info('Ankle not visible. Stopping.')
-                self.cmd_pub.publish(twist)  # stop
-                return
-
-            offset = ankle_x - self.center_x  # How far from center
+                twist.linear.x = 0.0
+                twist.angular.z = 0.0
 
             # Angular control: rotate to center the ankle
-            if abs(offset) > self.deadzone_px:
+            elif abs(offset) > self.deadzone_px:
                 twist.angular.z = -0.003 * offset  # negative because camera frame
                 twist.linear.x = 0.0
                 self.get_logger().info(f'Centering ankle: offset={offset}, turning...')
+		    
             else:
                 # Ankle is centered -> move forward slowly
                 twist.angular.z = 0.0
