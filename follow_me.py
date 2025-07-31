@@ -28,7 +28,7 @@ class FollowMe(Node):
 
         self.image_width = 640
         self.center_x = self.image_width // 2  # 160
-        self.deadzone_px = 20  # How close to the center before moving forward
+        self.tolerance_px = 20  # How close to the center before moving forward
         self.prev_linear_x = 0.0
 
     def image_callback(self, msg):
@@ -77,7 +77,7 @@ class FollowMe(Node):
                 twist.angular.z = 0.0
 
             # Angular control: rotate to center the ankle
-            elif abs(offset) > self.deadzone_px:
+            elif abs(offset) > self.tolerance_px:
                 twist.angular.z = -0.003 * offset  # negative because camera frame
                 twist.linear.x = 0.0
                 self.get_logger().info(f'Centering ankle: offset={offset}, turning...')
